@@ -35,21 +35,21 @@ services:
     depends_on:
       - php
 
-  mysql:
-    platform: linux/x86_64
-    image: mysql:5.7
-    container_name: mysql
-    environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: laravel
-      MYSQL_USER: user
-      MYSQL_PASSWORD: root
-      TZ: "Asia/Tokyo"
-    volumes:
-      - ./volumes/db/data:/var/lib/mysql
-      - ./docker/db/my.cnf:/etc/mysql/conf.d/my.cnf
-    ports:
-      - 3306:3306
+  #mysql:
+  #  platform: linux/x86_64
+  #  image: mysql:5.7
+  #  container_name: mysql
+  #  environment:
+  #    MYSQL_ROOT_PASSWORD: root
+  #    MYSQL_DATABASE: laravel
+  #    MYSQL_USER: user
+  #    MYSQL_PASSWORD: root
+  #    TZ: "Asia/Tokyo"
+  #  volumes:
+  #    - ./volumes/db/data:/var/lib/mysql
+  #    - ./docker/db/my.cnf:/etc/mysql/conf.d/my.cnf
+  #  ports:
+  #    - 3306:3306
 
   postgres:
     image: postgres:14-alpine
@@ -65,29 +65,38 @@ services:
     ports:
       - 5432:5432
 
-  pgadmin:
-    image: dpage/pgadmin4
-    container_name: pgadmin
-    volumes:
-      - ./volumes/pgadmin:/var/lib/pgadmin
-    ports:
-      - "8000:80"
-    environment:
-       PGADMIN_DEFAULT_EMAIL: pgadmin@email.com
-       PGADMIN_DEFAULT_PASSWORD: pgadmin
+  #pgadmin:
+  #  image: dpage/pgadmin4
+  #  container_name: pgadmin
+  #  volumes:
+  #    - ./volumes/pgadmin:/var/lib/pgadmin
+  #  ports:
+  #    - "8000:80"
+  #  environment:
+  #     PGADMIN_DEFAULT_EMAIL: pgadmin@email.com
+  #     PGADMIN_DEFAULT_PASSWORD: pgadmin
 
-  phpmyadmin:
-    image: phpmyadmin/phpmyadmin
-    container_name: phpmyadmin
-    environment:
-      - PMA_ARBITRARY=1
-      - PMA_HOST=mysql
-      - PMA_USER=root
-      - PMA_PASSWORD=root
+  adminer:
+    image: adminer
+    container_name: adminer
+    restart: always
     ports:
-      - 4040:80
-    depends_on:
-      - db
-    volumes:
-      - ./volumes/phpmyadmin/sessions:/sessions
-      - ./docker/phpmyadmin/phpmyadmin-misc.ini:/usr/local/etc/php/conf.d/phpmyadmin-misc.ini
+      - 8080:8080
+    depends_on: 
+      - postgres
+
+  #phpmyadmin:
+  #  image: phpmyadmin/phpmyadmin
+  #  container_name: phpmyadmin
+  #  environment:
+  #    - PMA_ARBITRARY=1
+  #    - PMA_HOST=mysql
+  #    - PMA_USER=root
+  #    - PMA_PASSWORD=root
+  #  ports:
+  #    - 4040:80
+  #  depends_on:
+  #    - db
+  #  volumes:
+  #    - ./volumes/phpmyadmin/sessions:/sessions
+  #    - ./docker/phpmyadmin/phpmyadmin-misc.ini:/usr/local/etc/php/conf.d/phpmyadmin-misc.ini
